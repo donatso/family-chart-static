@@ -45,7 +45,12 @@ app.get('/:name', async (req, res) => {
   }
 });
 
-// ─── Catch-all 404 for all other roots (including "/") ────────────────────────
+// ─── Health check for Render ──────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).send('');
+});
+
+// ─── Catch-all 404 for all other routes ────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).end();
 });
