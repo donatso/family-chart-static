@@ -54,19 +54,9 @@ app.use((req, res) => {
 async function start() {
   if (!fs.existsSync(AVATARS_DIR)) fs.mkdirSync(AVATARS_DIR, { recursive: true });
   await connectDB();
-  const server = app.listen(PORT, () =>
+  app.listen(PORT, () =>
     console.log(`🚀  Serving avatars at http://localhost:${PORT}/<filename>`)
   );
-
-  server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`❌  Error: Port ${PORT} is already in use.`);
-      process.exit(1);
-    } else {
-      console.error('❌  Server error:', err.message);
-      process.exit(1);
-    }
-  });
 }
 
 start().catch(err => {
