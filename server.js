@@ -25,6 +25,8 @@ async function connectDB() {
 
 // ─── Avatar route ─────────────────────────────────────────────────────────────
 app.get('/:name', async (req, res) => {
+  if (isCron(req)) return res.status(200).send('');
+
   const safeName = path.basename(req.params.name);
   const filePath  = path.join(AVATARS_DIR, safeName);
 
@@ -68,3 +70,8 @@ start().catch(err => {
   console.error('❌  Failed to start:', err.message);
   process.exit(1);
 });
+
+function isCron(req) {
+  const regex = /cron|uptimerobot|render|ping/i;
+  return req.query.cron === 'true' || regex.test(req.headers['user-agent'] || '');
+}
